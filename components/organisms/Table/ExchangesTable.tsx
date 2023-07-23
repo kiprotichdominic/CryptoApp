@@ -63,8 +63,18 @@ const ExchangesTable = async () => {
                   <td className="relative py-4 pr-3 text-sm font-medium ">{exchange?.rank}</td>
                   <td className="hidden px-3 py-4 text-sm  sm:table-cell">{exchange?.name}</td>
                   <td className="hidden px-3 py-4 text-sm  sm:table-cell">{exchange?.tradingPairs}</td>
-                  <td className="px-3 py-4 text-sm">$ {convertToInternationalCurrencySystem(exchange?.volumeUsd)}</td>
-                  <td className="px-3 py-4 text-sm">{parseInt(exchange?.percentTotalVolume).toFixed(2)} %</td>
+                  <td className="px-3 py-4 text-sm">
+                    $
+                    {convertToInternationalCurrencySystem(exchange?.volumeUsd) === "NaN"
+                      ? "0.00"
+                      : convertToInternationalCurrencySystem(exchange?.volumeUsd)}
+                  </td>
+                  <td className="px-3 py-4 text-sm">
+                    {parseInt(exchange?.percentTotalVolume).toFixed(2) === "NaN"
+                      ? "0.00"
+                      : parseInt(exchange?.percentTotalVolume).toFixed(2)}
+                    %
+                  </td>
                   <td className="hidden px-3 py-4 text-sm  sm:table-cell">
                     <Link
                       className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white border-gray-600"
