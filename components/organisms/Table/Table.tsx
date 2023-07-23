@@ -1,3 +1,5 @@
+import { convertToInternationalCurrencySystem } from "@/utils/convertToInternationalCurrencyFormat";
+
 interface CryptoInterface {
   id: string;
   rank: string;
@@ -22,22 +24,19 @@ export default async function Table() {
   const cryptos = await getCryptoData();
   return (
     <>
-      {/* {cryptos && cryptos?.data?.map((crypto: CryptoInterface) => <p>{crypto.name}</p>)} */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
-            <h1 className="text-base font-semibold leading-6 text-gray-900">Users</h1>
-            <p className="mt-2 text-sm text-gray-700">
-              A list of all the users in your account including their name, title, email and role.
-            </p>
+            <h1 className="text-base font-semibold leading-6 text-gray-900">CryptoPad</h1>
+            <p className="mt-2 text-sm text-gray-700">A list of all the Cryptocurrencies.</p>
           </div>
           <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-            <button
+            {/* <button
               type="button"
               className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Add user
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
@@ -68,6 +67,9 @@ export default async function Table() {
                   Supply
                 </th>
                 <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                  Volume(24Hr)
+                </th>
+                <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                   Change(24Hr)
                 </th>
               </tr>
@@ -79,10 +81,15 @@ export default async function Table() {
                     <td className="relative py-4 pr-3 text-sm font-medium ">{crypto?.rank}</td>
                     <td className="hidden px-3 py-4 text-sm  sm:table-cell">{crypto?.name}</td>
                     <td className="hidden px-3 py-4 text-sm  md:table-cell">
-                      {parseInt(crypto?.priceUsd).toLocaleString()}
+                      $ {convertToInternationalCurrencySystem(crypto?.priceUsd)}
                     </td>
-                    <td className="px-3 py-4 text-sm">{parseInt(crypto?.marketCapUsd).toLocaleString()}</td>
-                    <td className="px-3 py-4 text-sm">{parseInt(crypto?.supply).toLocaleString()}</td>
+                    <td className="px-3 py-4 text-sm">
+                      $ {convertToInternationalCurrencySystem(crypto?.marketCapUsd)}
+                    </td>
+                    <td className="px-3 py-4 text-sm">{convertToInternationalCurrencySystem(crypto?.supply)}</td>
+                    <td className="px-3 py-4 text-sm">
+                      $ {convertToInternationalCurrencySystem(crypto?.volumeUsd24Hr)}
+                    </td>
                     <td className="px-3 py-4 text-sm">{parseInt(crypto?.changePercent24Hr).toFixed(2)}</td>
                   </tr>
                 ))}
