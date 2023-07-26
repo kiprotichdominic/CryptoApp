@@ -1,4 +1,6 @@
+"use client";
 import { convertToInternationalCurrencySystem } from "@/utils/convertToInternationalCurrencyFormat";
+import { useEffect, useState } from "react";
 
 interface CryptoInterface {
   id: string;
@@ -15,13 +17,27 @@ interface CryptoInterface {
   explorer: string;
 }
 
-const getCryptoData = async () => {
-  const res = await fetch("https://api.coincap.io/v2/assets");
-  return res.json();
+const getCryptoData = (limit: number) => {
+  return fetch(`https://api.coincap.io/v2/assets/?limit=${limit}`)
+    .then((res) => res.json())
+    .then((data) => data?.data || []);
 };
 
-export default async function Table() {
-  const cryptos = await getCryptoData();
+export default function Table({ limit = 20 }: { limit?: number }) {
+  const [displayLimit, setDisplayLimit] = useState(limit);
+  const [cryptos, setCryptos] = useState<CryptoInterface[]>([]);
+
+  useEffect(() => {
+    getCryptoData(displayLimit).then((data) => {
+      setCryptos(data);
+    });
+    console.log(cryptos?.length, displayLimit);
+  }, [displayLimit]);
+
+  const handleLoadMore = () => {
+    setDisplayLimit((prevLimit) => prevLimit + 20);
+  };
+
   return (
     <>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10">
@@ -68,7 +84,7 @@ export default async function Table() {
             </thead>
             <tbody className="divide-y divide-gray-300">
               {cryptos &&
-                cryptos?.data?.map((crypto: CryptoInterface) => (
+                cryptos?.map((crypto: CryptoInterface) => (
                   <tr key={crypto.id}>
                     <td className="relative py-4 pr-3 text-sm font-medium ">{crypto?.rank}</td>
                     <td className="hidden px-3 py-4 text-sm  sm:table-cell">{crypto?.name}</td>
@@ -88,6 +104,16 @@ export default async function Table() {
             </tbody>
           </table>
         </div>
+        {displayLimit <= cryptos?.length && (
+          <div className="mt-4 flex justify-center">
+            <button
+              onClick={handleLoadMore}
+              className="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Load More
+            </button>
+          </div>
+        )}
       </div>
     </>
   );
