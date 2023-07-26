@@ -1,4 +1,5 @@
 "use client";
+import getCrypto from "@/lib/getCrypto";
 import { convertToInternationalCurrencySystem } from "@/utils/convertToInternationalCurrencyFormat";
 import { useEffect, useState } from "react";
 
@@ -17,21 +18,14 @@ interface CryptoInterface {
   explorer: string;
 }
 
-const getCryptoData = (limit: number) => {
-  return fetch(`https://api.coincap.io/v2/assets/?limit=${limit}`)
-    .then((res) => res.json())
-    .then((data) => data?.data || []);
-};
-
 export default function Table({ limit = 20 }: { limit?: number }) {
   const [displayLimit, setDisplayLimit] = useState(limit);
   const [cryptos, setCryptos] = useState<CryptoInterface[]>([]);
 
   useEffect(() => {
-    getCryptoData(displayLimit).then((data) => {
-      setCryptos(data);
+    getCrypto(displayLimit).then((data) => {
+      setCryptos(data?.data);
     });
-    console.log(cryptos?.length, displayLimit);
   }, [displayLimit]);
 
   const handleLoadMore = () => {

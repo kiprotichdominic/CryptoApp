@@ -1,4 +1,4 @@
-import ExchangesTable from "@/components/organisms/Table/ExchangesTable";
+import ExchangesTable from "@/components/Table/ExchangesTable";
 
 const page = () => {
   return (

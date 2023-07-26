@@ -1,11 +1,7 @@
+import getExchanges from "@/lib/getExchanges";
 import { convertToInternationalCurrencySystem } from "@/utils/convertToInternationalCurrencyFormat";
 import Link from "next/link";
 import React from "react";
-
-const getExchanges = async () => {
-  const res = await fetch("https://api.coincap.io/v2/exchanges");
-  return res.json();
-};
 
 interface ExchangeInterface {
   exchangeId: string;

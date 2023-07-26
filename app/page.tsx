@@ -1,4 +1,4 @@
-import Table from "@/components/organisms/Table/CryptoTable";
+import Table from "@/components/Table/CryptoTable";
 
 export default function Home() {
   return (
